@@ -22,7 +22,7 @@ class TimeSuite:
 
     def time_range(self):
         d = self.d
-        for key in range(500):
+        for key in range(600):
             x = d[key]
 
 

@@ -1,0 +1,14 @@
+{
+    "version": 1,
+    "project": "tardis",
+    "project_url": "https://github.com/atharva-2001/tardis-benchmark-test",
+    "repo": "https://github.com/atharva-2001/tardis-benchmark-test",
+    "show_commit_url": "https://github.com/atharva-2001/tardis-benchmark-test/commit",
+    "branches": ["master"], // for git
+    "matrix": {
+        "numpy": [],
+        "astropy": [],
+        "Cython": []
+    },
+    "environment_type": "conda"
+}

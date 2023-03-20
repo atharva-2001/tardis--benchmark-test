@@ -38,4 +38,10 @@ jobs:
       with:
         name: asv-benchmark-results-ubuntu-latest
         path: .asv/results
+
+    - uses: actions/upload-artifact@v2
+      if: always()
+      with:
+        name: asv-benchmark-results-ubuntu-latest2
+        path: results
     

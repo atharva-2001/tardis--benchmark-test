@@ -10,5 +10,8 @@
         "astropy": [],
         "Cython": []
     },
-    "environment_type": "conda"
+    "environment_type": "conda",
+    "results_dir": "results",
+    "html_dir": "html",
+    "hash_length": 8
 }

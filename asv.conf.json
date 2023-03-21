@@ -4,7 +4,7 @@
     "project_url": "https://github.com/atharva-2001/tardis-benchmark-test",
     "repo": "https://github.com/atharva-2001/tardis-benchmark-test.git",
     "show_commit_url": "https://github.com/atharva-2001/tardis-benchmark-test/commit",
-    "branches": ["master"], // for git
+    "branches": ["main"], // for git
     "matrix": {
         "numpy": [],
         "astropy": [],

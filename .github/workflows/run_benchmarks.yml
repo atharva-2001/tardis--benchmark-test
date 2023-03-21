@@ -40,4 +40,5 @@ jobs:
         path: results
     
     - run: asv publish
+    - run: asv gh-pages
     

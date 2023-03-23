@@ -34,7 +34,7 @@ jobs:
     - run: asv machine --yes
     
     - name: Run benchmarks
-      run: asv run --environment existing:same --verbose
+      run: asv run --verbose
 
     - uses: actions/upload-artifact@v2
       if: always()

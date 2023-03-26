@@ -45,14 +45,14 @@ jobs:
       if: always()
       with:
         name: asv-benchmark-results-ubuntu-latest2
-        path: results
+        path: .asv/results
     
     - run: asv publish
 
     - uses: actions/configure-pages@v1
     - uses: actions/upload-pages-artifact@v1
       with:
-        path: html
+        path: .asv/html
 
     - name: Deploy to GitHub Pages
       id: deployment

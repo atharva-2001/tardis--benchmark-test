@@ -84,20 +84,20 @@ jobs:
       with:
         token: ${{ secrets.DEPLOY_PAT }}
 
-    - uses: actions/upload-artifact@v2
-      if: always()
-      with:
-        name: asv-benchmark-results-ubuntu-latest2
-        path: .asv/results
+    # - uses: actions/upload-artifact@v2
+    #   if: always()
+    #   with:
+    #     name: asv-benchmark-results-ubuntu-latest2
+    #     path: .asv/results
 
-    - uses: actions/configure-pages@v1
-    - uses: actions/upload-pages-artifact@v1
-      with:
-        path: .asv/html
+    # - uses: actions/configure-pages@v1
+    # - uses: actions/upload-pages-artifact@v1
+    #   with:
+    #     path: .asv/html
 
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v1
+    # - name: Deploy to GitHub Pages
+    #   id: deployment
+    #   uses: actions/deploy-pages@v1
       # permissions:
       #   pages: write      # to deploy to Pages
       #   id-token: write   # to verify the deployment originates from an appropriate source

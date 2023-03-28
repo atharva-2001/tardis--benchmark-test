@@ -56,7 +56,7 @@ jobs:
       run: |
         git config --global user.email "aryaatharva18@gmail.com"
         git config --global user.name "Atharva Arya"
-        git add .
+        git add .asv
         git commit -m "test"
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
         gh repo view

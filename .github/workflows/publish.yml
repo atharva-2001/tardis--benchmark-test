@@ -16,15 +16,19 @@ defaults:
   run:
     shell: bash -l {0}
 
-permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
+# permissions:
+#       pages: write      # to deploy to Pages
+#       id-token: write   # to verify the deployment originates from an appropriate source
 
 
 jobs:
   build:
     uses: ./.github/workflows/run_benchmarks.yml
   publish:
+    permissions:
+      pages: write      # to deploy to Pages
+      id-token: write   # to verify the deployment originates from an appropriate source
+
     needs: build
     runs-on: ubuntu-latest
     steps:

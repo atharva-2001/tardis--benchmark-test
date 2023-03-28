@@ -10,7 +10,7 @@
         "version": "abe86bab484550a681c61d7bb6eb081fbd37eb6d5009eba1df85c935530577b9"
     },
     "benchmarks.TimeSuite.time_keys": {
-        "code": "class TimeSuite:\n    def time_keys(self):\n        for key in self.d.keys():\n            pass\n\n    def setup(self):\n        self.d = {}\n        for x in range(500):\n            self.d[x] = None",
+        "code": "class TimeSuite:\n    def time_keys(self):\n        for key in self.d.keys():\n            pass\n\n    def setup(self):\n        self.d = {}\n        for x in range(50000):\n            self.d[x] = None",
         "min_run_count": 2,
         "name": "benchmarks.TimeSuite.time_keys",
         "number": 0,
@@ -22,11 +22,11 @@
         "timeout": 60.0,
         "type": "time",
         "unit": "seconds",
-        "version": "86e015a3c40c52da31e4185fff7c7176c38c5e1e1e4aba71912db0b388225191",
+        "version": "8bb0748c62f81ffbc03edad8ebd66e72713ca5b61b9904c55f25fb3e7f31d67a",
         "warmup_time": -1
     },
     "benchmarks.TimeSuite.time_range": {
-        "code": "class TimeSuite:\n    def time_range(self):\n        d = self.d\n        for key in range(800):\n            x = d[key]\n\n    def setup(self):\n        self.d = {}\n        for x in range(500):\n            self.d[x] = None",
+        "code": "class TimeSuite:\n    def time_range(self):\n        d = self.d\n        for key in range(8000):\n            x = d[key]\n\n    def setup(self):\n        self.d = {}\n        for x in range(50000):\n            self.d[x] = None",
         "min_run_count": 2,
         "name": "benchmarks.TimeSuite.time_range",
         "number": 0,
@@ -38,11 +38,11 @@
         "timeout": 60.0,
         "type": "time",
         "unit": "seconds",
-        "version": "6758b36f625713060a3d3893d8270bf8a904f4f08ec5747536b8adb6dc0431df",
+        "version": "41b03fe890bb1cacc259d483df6c6a27560d0a49a83c46de49c92b3a79828250",
         "warmup_time": -1
     },
     "benchmarks.TimeSuite.time_values": {
-        "code": "class TimeSuite:\n    def time_values(self):\n        for value in self.d.values():\n            for random_no in range(3000):\n                _ = random_no**random_no\n            pass\n\n    def setup(self):\n        self.d = {}\n        for x in range(500):\n            self.d[x] = None",
+        "code": "class TimeSuite:\n    def time_values(self):\n        for value in self.d.values():\n            for random_no in range(30):\n                _ = random_no**random_no\n            pass\n\n    def setup(self):\n        self.d = {}\n        for x in range(50000):\n            self.d[x] = None",
         "min_run_count": 2,
         "name": "benchmarks.TimeSuite.time_values",
         "number": 0,
@@ -54,7 +54,7 @@
         "timeout": 60.0,
         "type": "time",
         "unit": "seconds",
-        "version": "2d73f40209c5ab78cf0c4380ff1fac52e7c63fef8b3704125f1f3130e99df2a5",
+        "version": "d842506c41547d3982fb149a9d97275ca6f7acabc4e511710aa3f073fe5b7eb3",
         "warmup_time": -1
     },
     "version": 2

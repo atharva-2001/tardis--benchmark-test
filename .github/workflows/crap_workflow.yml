@@ -44,6 +44,10 @@ jobs:
         git config --global user.name "Atharva Arya"
         git add .
         git commit -m "test"
+    
+    - run: |
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+    
+    - run: |
         gh repo view
-        git push -u origin HEAD
+        git push origin main

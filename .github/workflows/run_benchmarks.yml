@@ -45,7 +45,7 @@ jobs:
     
     - run: asv publish
 
-    - run: git config --unset-all http.https://github.com/.extraheader
+    # - run: git config --unset-all http.https://github.com/.extraheader
 
     # - name: Checkout repository
     #   uses: actions/checkout@v2
@@ -68,16 +68,18 @@ jobs:
     #     gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
     #     gh repo view
     #     git push -u origin HEAD
-    - name: Pushes to another repository
-      uses: cpina/github-action-push-to-another-repository@main
-      env:
-        API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
-      with:
-        source-directory: .asv
-        destination-github-username: atharva-2001
-        destination-repository-name: tardis-benchmark-test-results
-        user-email: aryaatharva18@gmail.com
-        target-branch: main
+    # - name: Pushes to another repository
+    #   uses: cpina/github-action-push-to-another-repository@main
+    #   env:
+    #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
+    #   with:
+    #     source-directory: .asv
+    #     destination-github-username: atharva-2001
+    #     destination-repository-name: tardis-benchmark-test-results
+    #     user-email: aryaatharva18@gmail.com
+    #     target-branch: main
+
+    - uses: stefanzweifel/git-auto-commit-action@v4
 
     - uses: actions/upload-artifact@v2
       if: always()

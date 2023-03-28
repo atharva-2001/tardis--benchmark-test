@@ -61,7 +61,7 @@ jobs:
         API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
       with:
         source-directory: '.'
-        destination-github-username: 'atharva-2001'
-        destination-repository-name: atharva-2001/tardis-benchmark-test-results
+        destination-github-username: atharva-2001
+        destination-repository-name: tardis-benchmark-test-results
         user-email: aryaatharva18@gmail.com
         target-branch: main

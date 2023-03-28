@@ -45,8 +45,11 @@ jobs:
         git add .
         git commit -m "test"
     
-    - run: |
+    - working-directory: tbt_results
+      run: |
+        working-directory: tbt_results
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
     
-    - run: |
+    - working-directory: tbt_results
+      run: |
         git push origin main

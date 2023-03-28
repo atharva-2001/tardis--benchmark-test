@@ -45,14 +45,16 @@ jobs:
     
     - run: asv publish
 
+    - run: git config --unset-all http.https://github.com/.extraheader
+
     - name: Checkout repository
       uses: actions/checkout@v2
       with:
         repository: atharva-2001/tardis-benchmark-test-results
-        path: ../../tbt_results
+        path: tbt_results
 
     - name: Create and push changes
-      working-directory: ../../tbt_results
+      working-directory: tbt_results
       run: |
         git config --global user.email "aryaatharva18@gmail.com"
         git config --global user.name "Atharva Arya"

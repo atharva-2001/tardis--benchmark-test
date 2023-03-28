@@ -49,5 +49,4 @@ jobs:
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
     
     - run: |
-        gh repo view
         git push origin main

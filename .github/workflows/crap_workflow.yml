@@ -52,6 +52,16 @@ jobs:
       run: |
         git remote -v
     
-    - working-directory: tbt_results
-      run: |
-        git push origin main
+    # - working-directory: tbt_results
+    #   run: |
+    #     git push origin main
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        source-directory: '.'
+        destination-github-username: 'atharva-2001'
+        destination-repository-name: atharva-2001/tardis-benchmark-test-results
+        user-email: aryaatharva18@gmail.com
+        target-branch: main

@@ -48,6 +48,9 @@ jobs:
     - working-directory: tbt_results
       run: |
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+    - working-directory: tbt_results
+      run: |
+        git remote -v
     
     - working-directory: tbt_results
       run: |

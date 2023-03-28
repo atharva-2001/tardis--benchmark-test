@@ -39,7 +39,7 @@ jobs:
         echo "New content" >> README.md
         git config --global user.email "aryaatharva18@gmail.com"
         git config --global user.name "Atharva Arya"
-        git add .asv
+        git add .
         git commit -m "test"
         gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
         gh repo view

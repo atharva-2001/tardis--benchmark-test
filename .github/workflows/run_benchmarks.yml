@@ -67,7 +67,7 @@ jobs:
         git commit -m "test"
         gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
         gh repo view
-        gh repo push
+        git push -u origin HEAD
 
     - uses: actions/upload-artifact@v2
       if: always()

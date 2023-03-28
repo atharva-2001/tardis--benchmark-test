@@ -47,27 +47,37 @@ jobs:
 
     - run: git config --unset-all http.https://github.com/.extraheader
 
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      with:
-        repository: atharva-2001/tardis-benchmark-test-results
-        path: tbt_results
+    # - name: Checkout repository
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: atharva-2001/tardis-benchmark-test-results
+    #     path: tbt_results
 
-    - run: tree  ../ -L 4
+    # - run: tree  ../ -L 4
     
-    - run: cp -r ../.asv .
-      working-directory: tbt_results
+    # - run: cp -r ../.asv .
+    #   working-directory: tbt_results
 
-    - name: Create and push changes
-      working-directory: tbt_results
-      run: |
-        git config --global user.email "aryaatharva18@gmail.com"
-        git config --global user.name "Atharva Arya"
-        git add .asv
-        git commit -m "test"
-        gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
-        gh repo view
-        git push -u origin HEAD
+    # - name: Create and push changes
+    #   working-directory: tbt_results
+    #   run: |
+    #     git config --global user.email "aryaatharva18@gmail.com"
+    #     git config --global user.name "Atharva Arya"
+    #     git add .asv
+    #     git commit -m "test"
+    #     gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
+    #     gh repo view
+    #     git push -u origin HEAD
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
+      with:
+        source-directory: .asv
+        destination-github-username: atharva-2001
+        destination-repository-name: tardis-benchmark-test-results
+        user-email: aryaatharva18@gmail.com
+        target-branch: main
 
     - uses: actions/upload-artifact@v2
       if: always()

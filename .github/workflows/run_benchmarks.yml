@@ -84,6 +84,8 @@ jobs:
     - uses: stefanzweifel/git-auto-commit-action@v4
       with:
         token: ${{ secrets.DEPLOY_PAT }}
+        add_options: '-A'
+
 
     # - uses: actions/upload-artifact@v2
     #   if: always()

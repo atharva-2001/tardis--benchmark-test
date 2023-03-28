@@ -31,6 +31,9 @@ jobs:
         path: tbt_results
 
     - run: tree  ../ -L 4
+
+    - run: git config --unset-all http.https://github.com/.extraheader
+      working-directory: tbt_results
     
 
     - name: Create and push changes
@@ -41,6 +44,6 @@ jobs:
         git config --global user.name "Atharva Arya"
         git add .
         git commit -m "test"
-        gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
+        gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
         gh repo view
         git push -u origin HEAD

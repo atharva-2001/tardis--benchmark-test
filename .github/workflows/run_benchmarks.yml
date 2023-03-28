@@ -45,6 +45,7 @@ jobs:
       run: asv run --verbose
     
     - run: asv publish
+    - run: git status
 
     # - run: git config --unset-all http.https://github.com/.extraheader
 

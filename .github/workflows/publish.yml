@@ -9,7 +9,7 @@ on:
     branches:
     - '*'
   workflow_dispatch:
-  workflow_call:
+  # workflow_call:
     
 
 defaults:
@@ -23,7 +23,7 @@ permissions:
 
 jobs:
   build:
-    uses: ./.github/workflows/publish.yml
+    uses: ./.github/workflows/run_benchmarks.yml
   publish:
     needs: build
     runs-on: ubuntu-latest

@@ -1,13 +1,13 @@
 name: run-benchmarks
 
 on:
-  push:
-    branches:
-    - '*'
+  # push:
+  #   branches:
+  #   - '*'
 
-  pull_request:
-    branches:
-    - '*'
+  # pull_request:
+  #   branches:
+  #   - '*'
   workflow_dispatch:
   workflow_call:
     
@@ -101,20 +101,21 @@ jobs:
       # permissions:
       #   pages: write      # to deploy to Pages
       #   id-token: write   # to verify the deployment originates from an appropriate source
-  publish:
-    needs: build
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/configure-pages@v1
-      - uses: actions/upload-pages-artifact@v1
-        with:
-          path: .asv/html
+  # publish:
+  #   uses: ./.github/workflows/publish.yml
+    # needs: build
+    # permissions:
+    #   pages: write      # to deploy to Pages
+    #   id-token: write
+    # runs-on: ubuntu-latest
+    # steps:
+    #   - uses: actions/checkout@v2
+    #   - uses: actions/configure-pages@v1
+    #   - uses: actions/upload-pages-artifact@v1
+    #     with:
+    #       path: .asv/html
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v1
+    #   - name: Deploy to GitHub Pages
+    #     id: deployment
+    #     uses: actions/deploy-pages@v1
     

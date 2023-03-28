@@ -23,6 +23,9 @@ permissions:
 
 jobs:
   build:
+    uses: ./.github/workflows/publish.yml
+  publish:
+    needs: build
     runs-on: ubuntu-latest
     steps:
     - uses: actions/configure-pages@v1

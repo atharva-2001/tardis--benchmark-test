@@ -8,6 +8,8 @@ on:
   pull_request:
     branches:
     - '*'
+  workflow_dispatch:
+    
 
 defaults:
   run:
@@ -40,14 +42,31 @@ jobs:
     
     - name: Run benchmarks
       run: asv run --verbose
+    
+    - run: asv publish
+
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: atharva-2001/tardis-benchmark-test-results
+        path: tbt_results
+
+    - name: Create and push changes
+      working-directory: tbt_results
+      run: |
+        git config --global user.email "aryaatharva18@gmail.com"
+        git config --global user.name "Atharva Arya"
+        git add .
+        git commit -m "test"
+        gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+        gh repo view
+        gh repo push
 
     - uses: actions/upload-artifact@v2
       if: always()
       with:
         name: asv-benchmark-results-ubuntu-latest2
         path: .asv/results
-    
-    - run: asv publish
 
     - uses: actions/configure-pages@v1
     - uses: actions/upload-pages-artifact@v1

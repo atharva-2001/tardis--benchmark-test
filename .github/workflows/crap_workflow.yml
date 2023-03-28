@@ -32,8 +32,6 @@ jobs:
 
     - run: tree  ../ -L 4
     
-    - run: cp -r ../.asv .
-      working-directory: tbt_results
 
     - name: Create and push changes
       working-directory: tbt_results

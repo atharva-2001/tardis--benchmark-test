@@ -1,71 +1,71 @@
-name: would-be-deleted
+# name: would-be-deleted
 
 
-on:
-  push:
-    branches:
-    - '*'
+# on:
+#   push:
+#     branches:
+#     - '*'
 
-  pull_request:
-    branches:
-    - '*'
-  workflow_dispatch:
+#   pull_request:
+#     branches:
+#     - '*'
+#   workflow_dispatch:
     
 
-defaults:
-  run:
-    shell: bash -l {0}
+# defaults:
+#   run:
+#     shell: bash -l {0}
 
-# permissions:
-#       pages: write      # to deploy to Pages
-#       id-token: write   # to verify the deployment originates from an appropriate source
+# # permissions:
+# #       pages: write      # to deploy to Pages
+# #       id-token: write   # to verify the deployment originates from an appropriate source
   
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout repository
-      uses: actions/checkout@v2
-      # with:
-      #   repository: atharva-2001/tardis-benchmark-test-results
-      #   path: tbt_results
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout repository
+#       uses: actions/checkout@v2
+#       # with:
+#       #   repository: atharva-2001/tardis-benchmark-test-results
+#       #   path: tbt_results
 
-    - run: tree  ../ -L 4
+#     - run: tree  ../ -L 4
 
-    # - run: git config --unset-all http.https://github.com/.extraheader
-    #   working-directory: tbt_results
+#     # - run: git config --unset-all http.https://github.com/.extraheader
+#     #   working-directory: tbt_results
     
 
-    - name: Create and push changes
-      # working-directory: tbt_results
-      run: echo "New content" >> README.md
+#     - name: Create and push changes
+#       # working-directory: tbt_results
+#       run: echo "New content" >> README.md
       
-      # git config --global user.email "aryaatharva18@gmail.com"
-      # git config --global user.name "Atharva Arya"
-      # git add .
-      # git commit -m "test"
+#       # git config --global user.email "aryaatharva18@gmail.com"
+#       # git config --global user.name "Atharva Arya"
+#       # git add .
+#       # git commit -m "test"
     
-    # - working-directory: tbt_results
-    #   run: |
-    #     gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
-    # - working-directory: tbt_results
-    #   run: |
-    #     git remote -v
+#     # - working-directory: tbt_results
+#     #   run: |
+#     #     gh auth login --with-token <<< "${{ secrets.GITHUB_TOKEN }}"
+#     # - working-directory: tbt_results
+#     #   run: |
+#     #     git remote -v
     
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        token: ${{ secrets.DEPLOY_PAT }}
+#     - uses: stefanzweifel/git-auto-commit-action@v4
+#       with:
+#         token: ${{ secrets.DEPLOY_PAT }}
     
-    # - working-directory: tbt_results
-    #   run: |
-    #     git push origin main
-    # - name: Pushes to another repository
-    #   uses: cpina/github-action-push-to-another-repository@main
-    #   env:
-    #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
-    #   with:
-    #     source-directory: '.'
-    #     destination-github-username: atharva-2001
-    #     destination-repository-name: tardis-benchmark-test-results
-    #     user-email: aryaatharva18@gmail.com
-    #     target-branch: main
+#     # - working-directory: tbt_results
+#     #   run: |
+#     #     git push origin main
+#     # - name: Pushes to another repository
+#     #   uses: cpina/github-action-push-to-another-repository@main
+#     #   env:
+#     #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
+#     #   with:
+#     #     source-directory: '.'
+#     #     destination-github-username: atharva-2001
+#     #     destination-repository-name: tardis-benchmark-test-results
+#     #     user-email: aryaatharva18@gmail.com
+#     #     target-branch: main

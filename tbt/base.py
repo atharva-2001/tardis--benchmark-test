@@ -1,6 +1,6 @@
 # from .cli import main  # pragma: no cover
 
-def run_this(no=2000):
+def run_this(no=5000):
     lst = []
     for item in range(no):
         lst.append(item*2)

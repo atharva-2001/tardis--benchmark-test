@@ -1,9 +1,9 @@
 # from .cli import main  # pragma: no cover
 
-def run_this(no=1):
+def run_this(no=2):
     lst = []
-    for item in no:
-        lst.append(no*2)
+    for item in range(no):
+        lst.append(item*2)
     del lst
     
 

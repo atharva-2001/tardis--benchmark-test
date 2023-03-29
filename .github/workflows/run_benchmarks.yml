@@ -65,11 +65,19 @@ jobs:
     #   run: |
     #     git config --global user.email "aryaatharva18@gmail.com"
     #     git config --global user.name "Atharva Arya"
-    #     git add .asv
-    #     git commit -m "test"
+    #     git add .
+    #     git commit -m "Automated changes"
     #     gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
     #     gh repo view
     #     git push -u origin HEAD
+        
+    - name: Create and push changes
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "Automated changes"
+        git push
     # - name: Pushes to another repository
     #   uses: cpina/github-action-push-to-another-repository@main
     #   env:
@@ -81,10 +89,10 @@ jobs:
     #     user-email: aryaatharva18@gmail.com
     #     target-branch: main
 
-    - uses: stefanzweifel/git-auto-commit-action@v4
-      with:
-        token: ${{ secrets.DEPLOY_PAT }}
-        add_options: '-A'
+    # - uses: stefanzweifel/git-auto-commit-action@v4
+    #   with:
+    #     token: ${{ secrets.DEPLOY_PAT }}
+    #     add_options: '-A'
 
 
     # - uses: actions/upload-artifact@v2

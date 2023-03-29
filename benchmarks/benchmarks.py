@@ -9,7 +9,7 @@ class TimeSuite:
     """
     def setup(self):
         self.d = {}
-        for x in range(800):
+        for x in range(80):
             self.d[x] = None
 
     def time_keys(self):

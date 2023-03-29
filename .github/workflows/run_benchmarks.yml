@@ -40,9 +40,12 @@ jobs:
       run: pip install asv
     
     - run: asv machine --yes
+
+    - run: git log -n 10  --pretty=format:"%H" >> tag_commits.txt
     
     - name: Run benchmarks
-      run: asv run --verbose
+      run: asv run HASHFILE:tag_commits.txt  
+      # run: asv continuous --split --show-stderr 'HEAD^' 'HEAD'    
     
     - run: asv publish
     - run: git status
@@ -78,6 +81,7 @@ jobs:
         git add .
         git commit -m "Automated changes"
         git push
+
     # - name: Pushes to another repository
     #   uses: cpina/github-action-push-to-another-repository@main
     #   env:
@@ -92,7 +96,9 @@ jobs:
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
     #     token: ${{ secrets.DEPLOY_PAT }}
-    #     add_options: '-A'
+        # repository: atharva-2001/tardis-benchmark-test-results
+
+        # add_options: '-A'
 
 
     # - uses: actions/upload-artifact@v2

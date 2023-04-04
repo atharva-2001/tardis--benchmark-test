@@ -41,12 +41,19 @@ jobs:
     
     - run: asv machine --yes
 
-    - run: git log -n 10  --pretty=format:"%H" >> tag_commits.txt
-    
-    - name: Run benchmarks
-      run: asv run HASHFILE:tag_commits.txt  
-      # run: asv continuous --split --show-stderr 'HEAD^' 'HEAD'    
-    
+    - name: Run benchmarks for last 10 commits if not PR
+      if: github.event_name != 'pull_request_target'
+      run: |
+        git log -n 10  --pretty=format:"%H" >> tag_commits.txt
+        asv run HASHFILE:tag_commits.txt -e
+  
+    - name: Compare HEAD with master if PR
+      if: github.event_name == 'pull_request_target'
+      run: |
+        asv continuous --split --show-stderr master 'HEAD'  | tee asv-output.log  
+        if grep -q Traceback asv-output.log; then
+        echo "Some benchmarks have errors!"
+      
     - run: asv publish
     - run: git status
 
@@ -74,24 +81,25 @@ jobs:
     #     gh repo view
     #     git push -u origin HEAD
         
-    - name: Create and push changes
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add .
-        git commit -m "Automated changes"
-        git push
+    # - name: Create and push changes
+    #   run: |
+    #     git config user.name github-actions
+    #     git config user.email github-actions@github.com
+    #     git add .
+    #     git commit -m "Automated changes"
+    #     git push
 
-    # - name: Pushes to another repository
-    #   uses: cpina/github-action-push-to-another-repository@main
-    #   env:
-    #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
-    #   with:
-    #     source-directory: .asv
-    #     destination-github-username: atharva-2001
-    #     destination-repository-name: tardis-benchmark-test-results
-    #     user-email: aryaatharva18@gmail.com
-    #     target-branch: main
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
+      with:
+        source-directory: .asv
+        destination-github-username: atharva-2001
+        destination-repository-name: tardis-benchmark-test-results
+        target-directory: .asv
+        user-email: aryaatharva18@gmail.com
+        target-branch: main
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:

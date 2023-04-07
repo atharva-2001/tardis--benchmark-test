@@ -107,13 +107,15 @@ jobs:
     #     git add .
     #     git commit -m "Automated changes"
     #     git push
+    
+    - run: rm -r .asv/env
 
     - name: Pushes to another repository
       uses: cpina/github-action-push-to-another-repository@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
       with:
-        source-directory: .asv/html
+        source-directory: .asv
         destination-github-username: atharva-2001
         destination-repository-name: tardis-benchmark-test-results
         target-directory: .asv

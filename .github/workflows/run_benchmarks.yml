@@ -28,6 +28,8 @@ jobs:
       with:
         fetch-depth: 0
     
+    - run: git fetch --all
+    
     - uses: actions/setup-python@v4
       name: python
       with:

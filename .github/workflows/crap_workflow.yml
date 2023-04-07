@@ -24,8 +24,8 @@
 #   build:
 #     runs-on: ubuntu-latest
 #     steps:
-#     - name: Checkout repository
-#       uses: actions/checkout@v2
+#     # - name: Checkout repository
+#     #   uses: actions/checkout@v2
 #       # with:
 #       #   repository: atharva-2001/tardis-benchmark-test-results
 #       #   path: tbt_results
@@ -52,20 +52,20 @@
 #     #   run: |
 #     #     git remote -v
     
-#     - uses: stefanzweifel/git-auto-commit-action@v4
-#       with:
-#         token: ${{ secrets.DEPLOY_PAT }}
+#     # - uses: stefanzweifel/git-auto-commit-action@v4
+#     #   with:
+#     #     token: ${{ secrets.DEPLOY_PAT }}
     
 #     # - working-directory: tbt_results
 #     #   run: |
 #     #     git push origin main
-#     # - name: Pushes to another repository
-#     #   uses: cpina/github-action-push-to-another-repository@main
-#     #   env:
-#     #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
-#     #   with:
-#     #     source-directory: '.'
-#     #     destination-github-username: atharva-2001
-#     #     destination-repository-name: tardis-benchmark-test-results
-#     #     user-email: aryaatharva18@gmail.com
-#     #     target-branch: main
+#     - name: Pushes to another repository
+#       uses: cpina/github-action-push-to-another-repository@main
+#       env:
+#         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+#       with:
+#         source-directory: '.'
+#         destination-github-username: atharva-2001
+#         destination-repository-name: tardis-benchmark-test-results
+#         user-email: aryaatharva18@gmail.com
+#         target-branch: main

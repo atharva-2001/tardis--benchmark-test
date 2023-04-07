@@ -44,13 +44,13 @@ jobs:
     - run: asv machine --yes
 
     - name: Run benchmarks for last 10 commits if not PR
-      if: github.event_name != 'pull_request_target'
+      if: github.event_name != 'pull_request'
       run: |
         git log -n 10  --pretty=format:"%H" >> tag_commits.txt
         asv run HASHFILE:tag_commits.txt -e
   
     - name: Compare HEAD with master if PR
-      if: github.event_name == 'pull_request_target'
+      if: github.event_name == 'pull_request'
       run: |
         asv continuous --split --show-stderr master 'HEAD'  | tee asv-output.log  
         if grep -q Traceback asv-output.log; then

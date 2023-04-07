@@ -52,7 +52,7 @@ jobs:
     - name: Compare HEAD with master if PR
       if: github.event_name == 'pull_request'
       run: |
-        asv continuous --split --show-stderr master 'HEAD'  | tee asv-output.log  
+        asv continuous --split --show-stderr main 'HEAD'  | tee asv-output.log  
         if grep -q Traceback asv-output.log; then
         echo "Some benchmarks have errors!"
       

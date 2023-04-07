@@ -1,13 +1,13 @@
 name: run-benchmarks
 
 on:
-  # push:
-  #   branches:
-  #   - '*'
+  push:
+    branches:
+    - '*'
 
-  # pull_request:
-  #   branches:
-  #   - '*'
+  pull_request:
+    branches:
+    - '*'
   workflow_dispatch:
   workflow_call:
     
@@ -40,15 +40,44 @@ jobs:
       run: pip install asv
     
     - run: asv machine --yes
-    
-    - name: Run benchmarks
-      run: asv run --verbose
-    
+
+    - name: Run benchmarks for last 10 commits if not PR
+      if: github.event_name != 'pull_request_target'
+      run: |
+        git log -n 10  --pretty=format:"%H" >> tag_commits.txt
+        asv run HASHFILE:tag_commits.txt -e
+  
+    - name: Compare HEAD with master if PR
+      if: github.event_name == 'pull_request_target'
+      run: |
+        asv continuous --split --show-stderr master 'HEAD'  | tee asv-output.log  
+        if grep -q Traceback asv-output.log; then
+        echo "Some benchmarks have errors!"
+      
     - run: asv publish
     - run: git status
 
-    # - run: git config --unset-all http.https://github.com/.extraheader
+    # - run: |
+    #     git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | \
+    #     xargs -L1 git config --unset-all
 
+    # - name: push to another repo pat
+    #   env: 
+    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+    #   run: |
+    #     mkdir results-repo
+    #     git clone https://$API_TOKEN_GITHUB@github.com/atharva-2001/tardis-benchmark-test-results results-repo
+        
+    #     cd results-repo
+    #     cp -r ../.asv/html ../.asv/results  .
+    #     git config --global user.email "aryaa_1@rknec.edu"
+    #     git config --global user.name "atharva-2001"
+    #     git add .
+    #     git commit -m "add result files"
+    #     git remote -v
+    #     git push origin main
+
+        
     # - name: Checkout repository
     #   uses: actions/checkout@v2
     #   with:
@@ -71,28 +100,32 @@ jobs:
     #     gh repo view
     #     git push -u origin HEAD
         
-    - name: Create and push changes
-      run: |
-        git config user.name github-actions
-        git config user.email github-actions@github.com
-        git add .
-        git commit -m "Automated changes"
-        git push
-    # - name: Pushes to another repository
-    #   uses: cpina/github-action-push-to-another-repository@main
-    #   env:
-    #     API_TOKEN_GITHUB: ${{ secrets.DEPLOY_PAT }}
-    #   with:
-    #     source-directory: .asv
-    #     destination-github-username: atharva-2001
-    #     destination-repository-name: tardis-benchmark-test-results
-    #     user-email: aryaatharva18@gmail.com
-    #     target-branch: main
+    # - name: Create and push changes
+    #   run: |
+    #     git config user.name github-actions
+    #     git config user.email github-actions@github.com
+    #     git add .
+    #     git commit -m "Automated changes"
+    #     git push
+
+    - name: Pushes to another repository
+      uses: cpina/github-action-push-to-another-repository@main
+      env:
+        API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      with:
+        source-directory: .asv/html
+        destination-github-username: atharva-2001
+        destination-repository-name: tardis-benchmark-test-results
+        target-directory: .asv
+        user-email: aryaatharva18@gmail.com
+        target-branch: main
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:
     #     token: ${{ secrets.DEPLOY_PAT }}
-    #     add_options: '-A'
+        # repository: atharva-2001/tardis-benchmark-test-results
+
+        # add_options: '-A'
 
 
     # - uses: actions/upload-artifact@v2

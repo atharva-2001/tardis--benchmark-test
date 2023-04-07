@@ -1,43 +1,43 @@
-name: publish
+# name: publish
 
-on:
-  push:
-    branches:
-    - '*'
+# on:
+#   push:
+#     branches:
+#     - '*'
 
-  pull_request:
-    branches:
-    - '*'
-  workflow_dispatch:
-  # workflow_call:
+#   pull_request:
+#     branches:
+#     - '*'
+#   workflow_dispatch:
+#   # workflow_call:
     
 
-defaults:
-  run:
-    shell: bash -l {0}
+# defaults:
+#   run:
+#     shell: bash -l {0}
 
-# permissions:
+# # permissions:
+# #       pages: write      # to deploy to Pages
+# #       id-token: write   # to verify the deployment originates from an appropriate source
+
+
+# jobs:
+#   build:
+#     uses: ./.github/workflows/run_benchmarks.yml
+#   publish:
+#     permissions:
 #       pages: write      # to deploy to Pages
 #       id-token: write   # to verify the deployment originates from an appropriate source
 
+#     needs: build
+#     runs-on: ubuntu-latest
+#     steps:
+#     - uses: actions/checkout@v2
+#     - uses: actions/configure-pages@v1
+#     - uses: actions/upload-pages-artifact@v1
+#       with:
+#         path: .asv
 
-jobs:
-  build:
-    uses: ./.github/workflows/run_benchmarks.yml
-  publish:
-    permissions:
-      pages: write      # to deploy to Pages
-      id-token: write   # to verify the deployment originates from an appropriate source
-
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/configure-pages@v1
-    - uses: actions/upload-pages-artifact@v1
-      with:
-        path: .asv
-
-    - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v1
+#     - name: Deploy to GitHub Pages
+#       id: deployment
+#       uses: actions/deploy-pages@v1

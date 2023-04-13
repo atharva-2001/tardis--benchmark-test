@@ -55,7 +55,7 @@ jobs:
       if: github.event_name == 'pull_request'
       run: |
         asv continuous --split --show-stderr ${{ github.event.pull_request.base.sha }} ${GITHUB_SHA}  | tee asv-output.log  \
-          | if grep -q Traceback asv-output.log; then
+          | if grep -q Traceback asv-output.log; then \
           | echo "Some benchmarks have errors!"
       
     - run: asv publish

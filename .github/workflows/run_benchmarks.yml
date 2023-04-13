@@ -50,6 +50,11 @@ jobs:
       run: |
         git log -n 10  --pretty=format:"%H" >> tag_commits.txt
         asv run HASHFILE:tag_commits.txt -e
+    
+    - name: Dump GitHub context
+      env:
+        GITHUB_CONTEXT: ${{ toJSON(github) }}
+      run: echo "$GITHUB_CONTEXT"
   
     - name: Compare HEAD with master if PR
       if: github.event_name == 'pull_request'

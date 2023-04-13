@@ -59,7 +59,7 @@ jobs:
           echo "Some benchmarks have errors!"
         fi
       
-    - run: asv publish
+    # - run: asv publish
     - run: git status
 
     # - run: |
@@ -116,7 +116,7 @@ jobs:
     - run: rm -r .asv/env
 
     - name: Pushes to another repository
-      if: github.event_name != 'pull_request_target'
+      if: github.event_name != 'pull_request'
       uses: cpina/github-action-push-to-another-repository@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -129,6 +129,7 @@ jobs:
         target-branch: main
     
     - name: Post comment
+      if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v2
       with:
         token:  ${{ secrets.API_TOKEN_GITHUB }}

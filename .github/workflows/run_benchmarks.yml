@@ -128,6 +128,8 @@ jobs:
         user-email: aryaatharva18@gmail.com
         target-branch: main
     
+    - run: echo ${{ github.event.client_payload.pull_request.number }}
+    
     - name: Post comment
       if: github.event_name == 'pull_request'
       uses: peter-evans/create-or-update-comment@v2

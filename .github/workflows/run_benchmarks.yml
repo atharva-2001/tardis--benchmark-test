@@ -135,7 +135,7 @@ jobs:
       uses: peter-evans/create-or-update-comment@v2
       with:
         token:  ${{ secrets.API_TOKEN_GITHUB }}
-        issue-number: ${{ github.event.client_payload.pull_request.number }}
+        issue-number: ${{ github.event.pull_request.number }}
         # edit-mode: replace
         body-file: asv-output.log  
 

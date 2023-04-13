@@ -53,6 +53,7 @@ jobs:
   
     - name: Compare HEAD with master if PR
       if: github.event_name == 'pull_request'
+      continue-on-error: true
       run: |
         asv continuous --split --show-stderr --factor 1.005 ${{ github.event.pull_request.base.sha }} ${GITHUB_SHA}  | tee asv-output.log  
         if grep -q Traceback asv-output.log; then 

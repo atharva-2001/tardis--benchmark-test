@@ -60,7 +60,7 @@ jobs:
       if: github.event_name == 'pull_request'
       continue-on-error: true
       run: |
-        asv continuous --show-stderr --factor 1.005 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  | tee asv-output.log  
+        asv continuous --factor 1.005 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  | tee asv-output.log  
         if grep -q Traceback asv-output.log; then 
           echo "Some benchmarks have errors!"
         fi
@@ -132,7 +132,7 @@ jobs:
         destination-repository-name: tardis-benchmark-test-results
         target-directory: .asv
         user-email: aryaatharva18@gmail.com
-        target-branch: mains
+        target-branch: main
     
     - run: echo ${{ github.event.client_payload.pull_request.number }}
     

@@ -20,7 +20,7 @@ defaults:
   
 jobs:
   build:
-    if: contains(github.event.label.name, 'benchmark')
+    if: contains(github.event.label.name, 'run-benchmarks')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2

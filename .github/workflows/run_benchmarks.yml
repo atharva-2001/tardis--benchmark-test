@@ -70,6 +70,7 @@ jobs:
         asv continuous --factor 1.005 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  | tee asv-output.log  
         if grep -q Traceback asv-output.log; then 
           echo "Some benchmarks have errors!"
+          exit 1
         fi
       
     # - run: asv publish

@@ -118,8 +118,11 @@ jobs:
           Here are the logs produced by ASV.
           Results can also be downloaded as artifacts. 
           <details>
+
+
             ${{join(steps.asv_logs.outputs.*, '\n')}}
             ${{ steps.asv_logs.outputs.LOGS }}
+            
           </details>
 
     # - uses: stefanzweifel/git-auto-commit-action@v4

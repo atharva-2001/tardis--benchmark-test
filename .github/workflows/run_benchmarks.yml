@@ -116,7 +116,7 @@ jobs:
           Hi human, 
           I ran benchmarks as you asked comparing master (${{ github.event.pull_request.base.sha }}) and the latest commit (${{ github.event.pull_request.head.sha }}). 
           Here are the logs produced by ASV.
-          Results can also be downloaded as artifacts. 
+          Results can also be downloaded as artifacts [**here**](${{ env.URL }}). 
           <details>
 
             ```
@@ -124,6 +124,9 @@ jobs:
             ${{ steps.asv_logs.outputs.LOGS }}
             ```
           </details>
+      env:
+        URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
+      
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:

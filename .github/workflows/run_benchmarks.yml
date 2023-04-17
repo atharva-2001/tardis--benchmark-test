@@ -97,10 +97,7 @@ jobs:
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
         echo "text<<$EOF" >> $GITHUB_OUTPUT
-        # LOGS_C=$(<asv-output.log)
-        # echo $LOGS_C
-        # echo "LOGS=$LOGS_C" >> $GITHUB_OUTPUT
-        echo "LOGS=$( cat asv-output.log)" >> $GITHUB_ENV
+        echo "LOGS: $( cat asv-output.log)" >> $GITHUB_OUTPUT
         echo "$EOF" >> $GITHUB_OUTPUT
         # cat asv-output.log
 

@@ -93,11 +93,13 @@ jobs:
     - run: echo ${{ github.event.client_payload.pull_request.number }}
     
     - name: Get logs
+      id: asv_logs
       run: |
         LOGS_C=$(<asv-output.log)
         echo $LOGS_C
-        echo "LOGS=$LOGS_C" >> $GITHUB_ENV
+        echo "LOGS=$LOGS_C" >> $GITHUB_OUTPUT
         # echo "LOGS=$(<asv-output.log)" >> $GITHUB_ENV
+        # cat asv-output.log
 
     - name: Post comment
       if: github.event_name == 'pull_request'
@@ -115,7 +117,7 @@ jobs:
           Results can also be downloaded as artifacts. 
           <details>
             <summary>ASV Logs</summary>
-            ${{ env.LOGS }}
+            ${{ steps.asv_logs.outputs.LOGS }}
           </details>
 
     # - uses: stefanzweifel/git-auto-commit-action@v4

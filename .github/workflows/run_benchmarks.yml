@@ -93,7 +93,9 @@ jobs:
     - run: echo ${{ github.event.client_payload.pull_request.number }}
     
     - name: Get logs
-      run: echo "LOGS=$(<asv-output.log)" >> $GITHUB_ENV
+      run: |
+        LOGS_CONTENTS=$(cat asv-output.log)
+        echo "LOGS=$LOGS_CONTENTS" >> $GITHUB_ENV
 
     - name: Post comment
       if: github.event_name == 'pull_request'

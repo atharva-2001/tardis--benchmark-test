@@ -100,6 +100,8 @@ jobs:
         echo "LOGS= $( cat asv-output.log)" >> $GITHUB_OUTPUT
         echo "$EOF" >> $GITHUB_OUTPUT
         # cat asv-output.log
+    
+    - run: echo ${{ steps.asv_logs.outputs.LOGS }}
 
     - name: Post comment
       if: github.event_name == 'pull_request'

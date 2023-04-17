@@ -118,7 +118,6 @@ jobs:
           Here are the logs produced by ASV.
           Results can also be downloaded as artifacts. 
           <details>
-            <summary>ASV Logs</summary>
             ${{join(steps.asv_logs.outputs.*, '\n')}}
             ${{ steps.asv_logs.outputs.LOGS }}
           </details>

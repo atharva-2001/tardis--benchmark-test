@@ -97,11 +97,11 @@ jobs:
       run: |
         EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
         echo "text<<$EOF" >> $GITHUB_OUTPUT
-        echo "LOGS= $( cat asv-output.log)" >> $GITHUB_OUTPUT
+        echo "LOGS=$(cat asv-output.log)" >> $GITHUB_OUTPUT
         echo "$EOF" >> $GITHUB_OUTPUT
         # cat asv-output.log
     
-    - run: echo ${{join(steps.asv_logs.outputs.*, '\n')}}
+    # - run: echo ${{join(steps.asv_logs.outputs.*, '\n')}}
 
     - name: Post comment
       if: github.event_name == 'pull_request'
@@ -120,6 +120,7 @@ jobs:
           <details>
             <summary>ASV Logs</summary>
             ${{join(steps.asv_logs.outputs.*, '\n')}}
+            ${{ steps.asv_logs.outputs.LOGS }}
           </details>
 
     # - uses: stefanzweifel/git-auto-commit-action@v4

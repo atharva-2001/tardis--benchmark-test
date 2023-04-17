@@ -95,6 +95,7 @@ jobs:
     - name: Get logs
       run: |
         LOGS_C=$(<asv-output.log)
+        echo $LOGS_C
         echo "LOGS=$LOGS_C" >> $GITHUB_ENV
         # echo "LOGS=$(<asv-output.log)" >> $GITHUB_ENV
 

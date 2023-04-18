@@ -33,6 +33,10 @@ jobs:
       with:
         fetch-depth: 0
     
+    - run: |
+        REPO_URL="https://dev.azure.com/tardis-sn/TARDIS/_apis/git/repositories/tardis-refdata"
+        wget -q "$REPO_URL/items?path=atom_data/kurucz_cd23_chianti_H_He.h5&versionType=branch&version=master&resolveLfs=true" -O benchmarks/data/kurucz_cd23_chianti_H_He.h5
+
     - run: git fetch --all
     
     - uses: actions/setup-python@v4
@@ -141,7 +145,7 @@ jobs:
             I ran benchmarks as you asked comparing master (${{ github.event.pull_request.base.sha }}) and the latest commit (${{ github.event.pull_request.head.sha }}). 
             Here are the logs produced by ASV.
             Results can also be downloaded as artifacts [**here**](${{ env.URL }}). 
-            
+
             <details>
             <pre>
             <code>

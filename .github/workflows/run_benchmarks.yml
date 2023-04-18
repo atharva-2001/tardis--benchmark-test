@@ -34,7 +34,6 @@ jobs:
         fetch-depth: 0
 
 
-
     - run: |
         REPO_URL="https://dev.azure.com/tardis-sn/TARDIS/_apis/git/repositories/tardis-refdata"
         wget -q "$REPO_URL/items?path=atom_data/kurucz_cd23_chianti_H_He.h5&versionType=branch&version=master&resolveLfs=true" -O benchmarks/data/kurucz_cd23_chianti_H_He.h5

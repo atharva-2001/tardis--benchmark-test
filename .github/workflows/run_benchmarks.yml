@@ -156,6 +156,7 @@ jobs:
         URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
     
     - uses: actions/github-script@v6
+      if: github.event_name == 'pull_request'
       with:
         script: |
           github.rest.issues.createComment({

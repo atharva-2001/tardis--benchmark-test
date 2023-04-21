@@ -31,6 +31,9 @@ jobs:
         github.event_name == 'workflow_dispatch' || 
         contains(github.event.pull_request.labels.*.name, 'run-benchmarks')
     runs-on: ubuntu-latest
+    env:
+      CCACHE_BASEDIR: "${{ github.workspace }}"
+      CCACHE_DIR: "${{ github.workspace }}/.ccache"
     steps:
     - uses: actions/checkout@v2
       with:
@@ -53,8 +56,24 @@ jobs:
         auto-activate-base: true
         activate-environment: ""
         
-    - name: Install asv
-      run: pip install asv
+    - name: Install asv and ccache
+      run: |
+        pip install asv
+        sudo apt-get update -y && sudo apt-get install -y ccache
+        # Make gcc/gxx symlinks first in path
+        sudo /usr/sbin/update-ccache-symlinks
+        echo "/usr/lib/ccache" >> $GITHUB_PATH
+    
+    - name: Prepare ccache
+      run: |
+        ccache -p
+        ccache -z
+    
+    - name: "Restore ccache"
+      uses: actions/cache@v3
+      with:
+        path: .ccache
+        key: ccache
     
     - run: asv machine --yes
     
@@ -164,6 +183,9 @@ jobs:
       env:
         URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
     
+    - name: Check ccache performance
+      run: ccache -s
+      if: always()
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:

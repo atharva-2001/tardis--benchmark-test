@@ -7,9 +7,6 @@ on:
 
   pull_request:
     types: [labeled, synchronize]
-  pull_request_target:
-    branches:
-      - main
 
   workflow_dispatch:
   workflow_call:

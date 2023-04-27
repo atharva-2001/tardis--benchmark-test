@@ -3,14 +3,11 @@ name: run-benchmarks
 on:
   push:
     branches:
-    - main
+    - '*'
 
   pull_request:
-    types: [labeled, synchronize]
-  pull_request_target:
     branches:
-      - main
-
+    - '*'
   workflow_dispatch:
   workflow_call:
     
@@ -25,23 +22,11 @@ defaults:
   
 jobs:
   build:
-    # if: contains(github.event.pull_request.labels.*.name, 'run-benchmarks')
-    # if: contains(github.event.commits[0].message, 'bench') || contains(github.event.pull_request.head.label , 'bench') 
-    if: github.event_name == 'push' ||
-        github.event_name == 'workflow_dispatch' || 
-        contains(github.event.pull_request.labels.*.name, 'run-benchmarks')
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
       with:
         fetch-depth: 0
-    - run: echo ${{ github.event.pull_request.commits }}
-
-    - run: |
-        REPO_URL="https://dev.azure.com/tardis-sn/TARDIS/_apis/git/repositories/tardis-refdata"
-        wget -q "$REPO_URL/items?path=atom_data/kurucz_cd23_chianti_H_He.h5&versionType=branch&version=master&resolveLfs=true" -O benchmarks/data/kurucz_cd23_chianti_H_He.h5
-
-    - run: git fetch --all
     
     - uses: actions/setup-python@v4
       name: python
@@ -57,37 +42,77 @@ jobs:
       run: pip install asv
     
     - run: asv machine --yes
-    
-    - run: git branch
 
     - name: Run benchmarks for last 10 commits if not PR
-      if: github.event_name != 'pull_request'
+      if: github.event_name != 'pull_request_target'
       run: |
         git log -n 10  --pretty=format:"%H" >> tag_commits.txt
         asv run HASHFILE:tag_commits.txt -e
-    
-    - name: Dump GitHub context
-      env:
-        GITHUB_CONTEXT: ${{ toJSON(github) }}
-      run: echo "$GITHUB_CONTEXT"
   
     - name: Compare HEAD with master if PR
-      if: github.event_name == 'pull_request'
-      continue-on-error: true
+      if: github.event_name == 'pull_request_target'
       run: |
-        asv continuous --factor 1.005 ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}  | tee asv-output.log  
-        if grep -q Traceback asv-output.log; then 
-          echo "Some benchmarks have errors!"
-          exit 1
-        fi
+        asv continuous --split --show-stderr master 'HEAD'  | tee asv-output.log  
+        if grep -q Traceback asv-output.log; then
+        echo "Some benchmarks have errors!"
       
-    # - run: asv publish
+    - run: asv publish
     - run: git status
 
+    # - run: |
+    #     git config -l | grep 'http\..*\.extraheader' | cut -d= -f1 | \
+    #     xargs -L1 git config --unset-all
+
+    # - name: push to another repo pat
+    #   env: 
+    #     API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+    #   run: |
+    #     mkdir results-repo
+    #     git clone https://$API_TOKEN_GITHUB@github.com/atharva-2001/tardis-benchmark-test-results results-repo
+        
+    #     cd results-repo
+    #     cp -r ../.asv/html ../.asv/results  .
+    #     git config --global user.email "aryaa_1@rknec.edu"
+    #     git config --global user.name "atharva-2001"
+    #     git add .
+    #     git commit -m "add result files"
+    #     git remote -v
+    #     git push origin main
+
+        
+    # - name: Checkout repository
+    #   uses: actions/checkout@v2
+    #   with:
+    #     repository: atharva-2001/tardis-benchmark-test-results
+    #     path: tbt_results
+
+    # - run: tree  ../ -L 4
+    
+    # - run: cp -r ../.asv .
+    #   working-directory: tbt_results
+
+    # - name: Create and push changes
+    #   working-directory: tbt_results
+    #   run: |
+    #     git config --global user.email "aryaatharva18@gmail.com"
+    #     git config --global user.name "Atharva Arya"
+    #     git add .
+    #     git commit -m "Automated changes"
+    #     gh auth login --with-token <<< "${{ secrets.DEPLOY_PAT }}"
+    #     gh repo view
+    #     git push -u origin HEAD
+        
+    # - name: Create and push changes
+    #   run: |
+    #     git config user.name github-actions
+    #     git config user.email github-actions@github.com
+    #     git add .
+    #     git commit -m "Automated changes"
+    #     git push
+    
     - run: rm -r .asv/env
 
     - name: Pushes to another repository
-      if: github.event_name != 'pull_request'
       uses: cpina/github-action-push-to-another-repository@main
       env:
         API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
@@ -98,72 +123,6 @@ jobs:
         target-directory: .asv
         user-email: aryaatharva18@gmail.com
         target-branch: main
-    
-    - run: echo ${{ github.event.client_payload.pull_request.number }}
-    
-    - name: Get logs
-      id: asv_logs
-      run: |
-        EOF=$(dd if=/dev/urandom bs=15 count=1 status=none | base64)
-        echo "text<<$EOF" >> $GITHUB_OUTPUT
-        echo "$(cat asv-output.log)" >> $GITHUB_OUTPUT
-        echo "$EOF" >> $GITHUB_OUTPUT
-        # cat asv-output.log
-    
-    # - run: echo ${{join(steps.asv_logs.outputs.*, '\n')}}
-
-    - name: Post comment
-      if: github.event_name == 'pull_request'
-      uses: peter-evans/create-or-update-comment@v2
-      with:
-        token:  ${{ secrets.API_TOKEN_GITHUB }}
-        issue-number: ${{ github.event.pull_request.number }}
-        # edit-mode: replace
-        # body-file: asv-output.log  
-        body: |
-          *\*beep\* \*bop\**
-          Hi human, 
-          I ran benchmarks as you asked comparing master (${{ github.event.pull_request.base.sha }}) and the latest commit (${{ github.event.pull_request.head.sha }}). 
-          Here are the logs produced by ASV.
-          Results can also be downloaded as artifacts [**here**](${{ env.URL }}). 
-          <details>
-
-            ```
-            ${{join(steps.asv_logs.outputs.*, '\n')}}
-            ${{ steps.asv_logs.outputs.LOGS }}
-            ```
-          </details>
-      env:
-        URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-    
-    - uses: actions/github-script@v6
-      with:
-        script: |
-          github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: `
-            *\*beep\* \*bop\**
-            Hi human, 
-            I ran benchmarks as you asked comparing master (${{ github.event.pull_request.base.sha }}) and the latest commit (${{ github.event.pull_request.head.sha }}). 
-            Here are the logs produced by ASV.
-            Results can also be downloaded as artifacts [**here**](${{ env.URL }}). 
-
-            <details>
-            <pre>
-            <code>
-            ${{join(steps.asv_logs.outputs.*, '\n')}}
-            ${{ steps.asv_logs.outputs.LOGS }}
-            </code>
-            </pre>
-            </details>
-              
-              `
-            })
-      env:
-        URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
-    
 
     # - uses: stefanzweifel/git-auto-commit-action@v4
     #   with:

@@ -99,7 +99,11 @@ jobs:
           echo "Some benchmarks have errors!"
           exit 1
         fi
-      
+    
+    - run: asv compare ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+
+    - run: asv compare ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --only-changed
+
     # - run: asv publish
     - run: git status
 

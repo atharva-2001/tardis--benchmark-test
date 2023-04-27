@@ -7,9 +7,6 @@ on:
 
   pull_request:
     types: [labeled, synchronize]
-  pull_request_target:
-    branches:
-      - main
 
   workflow_dispatch:
   workflow_call:
@@ -80,6 +77,10 @@ jobs:
           echo "Some benchmarks have errors!"
           exit 1
         fi
+    
+    - run: asv compare ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }}
+    - run: asv compare ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} --only-changed
+
       
     # - run: asv publish
     - run: git status
@@ -110,7 +111,14 @@ jobs:
         echo "$EOF" >> $GITHUB_OUTPUT
         # cat asv-output.log
     
-    # - run: echo ${{join(steps.asv_logs.outputs.*, '\n')}}
+    - name: Find Comment
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/find-comment@v1
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'atharva-2001'
+        body-includes: I ran benchmarks as you asked comparing master
 
     - name: Post comment
       if: github.event_name == 'pull_request'
@@ -118,8 +126,7 @@ jobs:
       with:
         token:  ${{ secrets.API_TOKEN_GITHUB }}
         issue-number: ${{ github.event.pull_request.number }}
-        # edit-mode: replace
-        # body-file: asv-output.log  
+        comment-id: ${{ steps.fc.outputs.comment-id }}
         body: |
           *\*beep\* \*bop\**
           Hi human, 
@@ -165,46 +172,3 @@ jobs:
         URL: https://github.com/${{ github.repository_owner }}/${{ github.event.repository.name }}/actions/runs/${{ github.run_id }}?check_suite_focus=true
     
 
-    # - uses: stefanzweifel/git-auto-commit-action@v4
-    #   with:
-    #     token: ${{ secrets.DEPLOY_PAT }}
-        # repository: atharva-2001/tardis-benchmark-test-results
-
-        # add_options: '-A'
-
-
-    # - uses: actions/upload-artifact@v2
-    #   if: always()
-    #   with:
-    #     name: asv-benchmark-results-ubuntu-latest2
-    #     path: .asv/results
-
-    # - uses: actions/configure-pages@v1
-    # - uses: actions/upload-pages-artifact@v1
-    #   with:
-    #     path: .asv/html
-
-    # - name: Deploy to GitHub Pages
-    #   id: deployment
-    #   uses: actions/deploy-pages@v1
-      # permissions:
-      #   pages: write      # to deploy to Pages
-      #   id-token: write   # to verify the deployment originates from an appropriate source
-  # publish:
-  #   uses: ./.github/workflows/publish.yml
-    # needs: build
-    # permissions:
-    #   pages: write      # to deploy to Pages
-    #   id-token: write
-    # runs-on: ubuntu-latest
-    # steps:
-    #   - uses: actions/checkout@v2
-    #   - uses: actions/configure-pages@v1
-    #   - uses: actions/upload-pages-artifact@v1
-    #     with:
-    #       path: .asv/html
-
-    #   - name: Deploy to GitHub Pages
-    #     id: deployment
-    #     uses: actions/deploy-pages@v1
-    

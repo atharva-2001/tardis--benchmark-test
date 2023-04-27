@@ -111,7 +111,14 @@ jobs:
         echo "$EOF" >> $GITHUB_OUTPUT
         # cat asv-output.log
     
-    # - run: echo ${{join(steps.asv_logs.outputs.*, '\n')}}
+    - name: Find Comment
+      if: github.event_name == 'pull_request'
+      uses: peter-evans/find-comment@v1
+      id: fc
+      with:
+        issue-number: ${{ github.event.pull_request.number }}
+        comment-author: 'atharva-2001'
+        body-includes: I ran benchmarks as you asked comparing master
 
     - name: Post comment
       if: github.event_name == 'pull_request'
@@ -119,8 +126,7 @@ jobs:
       with:
         token:  ${{ secrets.API_TOKEN_GITHUB }}
         issue-number: ${{ github.event.pull_request.number }}
-        # edit-mode: replace
-        # body-file: asv-output.log  
+        comment-id: ${{ steps.fc.outputs.comment-id }}
         body: |
           *\*beep\* \*bop\**
           Hi human, 

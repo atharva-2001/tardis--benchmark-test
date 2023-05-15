@@ -1,6 +1,7 @@
 # Write the benchmarking functions here.
 # See "Writing benchmarks" in the asv docs for more information.
 from tbt import run_this
+import h5py
 
 class TimeSuite:
     """

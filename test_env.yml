@@ -1,0 +1,34 @@
+name: tardis
+
+channels:
+  - conda-forge
+
+dependencies:
+
+  # WARNING: any change to this section must be applied to the conda-forge
+  # package recipe at https://github.com/conda-forge/tardis-sn-feedstock
+
+  - python=3.8
+  - setuptools
+  - setuptools_scm<7
+  - pip
+  - numpy=1.19
+  - scipy=1.5
+  - pandas=1.0
+  - astropy=5.0
+  - numba=0.53
+  - numexpr
+  - radioactivedecay>=0.4.12
+
+  # Plasma
+  - networkx
+  - pygraphviz
+
+  # I/O
+  - pyyaml
+  - jsonschema
+  - hdf5=1.10
+  - h5py
+  - pytables
+  - requests
+  - tqdm

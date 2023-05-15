@@ -30,7 +30,7 @@
 
     // List of branches to benchmark. If not provided, defaults to "master"
     // (for git) or "default" (for mercurial).
-    "branches": ["main"], // for git
+    "branches": ["sample2"], // for git
     // "branches": ["default"],    // for mercurial
 
     // The DVCS being used.  If not set, it will be automatically
@@ -62,7 +62,7 @@
     // "conda_channels": ["conda-forge", "defaults"],
 
     // A conda environment file that is used for environment creation.
-    // "conda_environment_file": "environment.yml",
+    "conda_environment_file": "test_env.yml",
 
     // The matrix of dependencies to test.  Each key of the "req"
     // requirements dictionary is the name of a package (in PyPI) and

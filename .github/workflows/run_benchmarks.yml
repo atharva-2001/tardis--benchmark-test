@@ -58,10 +58,10 @@ jobs:
     
     - run: git branch
 
-    - name: Run benchmarks for last 10 commits if not PR
+    - name: Run benchmarks for last 3 commits if not PR
       # if: github.event_name != 'pull_request'
       run: |
-        git log -n 10  --pretty=format:"%H" >> tag_commits.txt
+        git log -n 3  --pretty=format:"%H" >> tag_commits.txt
         asv run HASHFILE:tag_commits.txt -e
     
     - name: Dump GitHub context
